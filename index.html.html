@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Votação Oficial — Reality Show</title>
+
+  <!-- Fonte profissional -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --azul: #1c3faa;
+      --azul-claro: #3b82f6;
+      --fundo: #05070d;
+      --card: #121829;
+      --texto: #e5e7eb;
+      --cinza: #9ca3af;
+      --verde: #22c55e;
+      --branco: #ffffff;
+    }
+
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #020617, #05070d);
+      color: var(--texto);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container { width: 100%; max-width: 1100px; padding: 32px; }
+
+    .header { text-align: center; margin-bottom: 42px; }
+    .header h1 { font-size: 2.3rem; font-weight: 700; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--card), #0b1020);
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: 0 30px 70px rgba(0,0,0,.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar {
+      width: 100%;
+      height: 180px;
+      border-radius: 16px;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, #1f2937, #020617);
+    }
+
+    .name {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+      color: var(--branco);
+    }
+
+    .vote-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(90deg, var(--azul), var(--azul-claro));
+      color: var(--branco);
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .vote-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(59,130,246,.45); }
+
+    /* CONFIRMAÇÃO EM TELA (OVERLAY) */
+    .confirm {
+      position: absolute;
+      inset: 0;
+      background: rgba(2,6,23,.92);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: fadeIn .25s ease;
+    }
+
+    .check {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--verde);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      color: #052e16;
+      animation: pop .4s ease;
+      margin-bottom: 16px;
+    }
+
+    .confirm p { font-weight: 600; margin-bottom: 18px; }
+
+    .vote-again {
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: none;
+      background: #162a4d;
+      color: var(--branco);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ADMIN */
+    .admin {
+      display: none;
+      margin-top: 60px;
+      background: #020617;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 25px 60px rgba(0,0,0,.55);
+    }
+
+    .admin h2 { margin-top: 0; }
+
+    .bar {
+      background: #1a2440;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 12px;
+      margin: 8px 0 22px;
+    }
+
+    .fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--azul), #22d3ee);
+      width: 0%;
+      transition: width .6s ease;
+    }
+
+    @keyframes pop { from { transform: scale(.8); opacity:0 } to { transform: scale(1); opacity:1 } }
+    @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Votação Oficial</h1>
+    </div>
+
+    <div class="cards">
+      <div class="card" data-id="0">
+        <div class="avatar"></div>
+        <div class="name">Participante 1</div>
+        <button class="vote-btn">VOTAR</button>
+        <div class="confirm">
+          <div class="check">✓</div>
+          <p>Voto computado com sucesso</p>
+          <button class="vote-again">VOTAR NOVAMENTE</button>
+        </div>
+      </div>
+
+      <div class="card" data-id="1">
+        <div class="avatar"></div>
+        <div class="name">Participante 2</div>
+        <button class="vote-btn">VOTAR</button>
+        <div class="confirm">
+          <div class="check">✓</div>
+          <p>Voto computado com sucesso</p>
+          <button class="vote-again">VOTAR NOVAMENTE</button>
+        </div>
+      </div>
+
+      <div class="card" data-id="2">
+        <div class="avatar"></div>
+        <div class="name">Participante 3</div>
+        <button class="vote-btn">VOTAR</button>
+        <div class="confirm">
+          <div class="check">✓</div>
+          <p>Voto computado com sucesso</p>
+          <button class="vote-again">VOTAR NOVAMENTE</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin" id="adminPanel">
+      <h2>Ranking Parcial (Admin)</h2>
+      <div id="adminResults"></div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================
+       LÓGICA DE VOTAÇÃO REALITY
+       ========================= */
+
+    // Fonte única dos votos
+    // ====== ESTADO DOS VOTOS (PERSISTENTE) ======
+    const STORAGE_KEY = 'reality_votes';
+    const votes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [0, 0, 0];
+
+    // Áudio (garantido por clique)
+    // ====== SOM DE CONFIRMAÇÃO (GARANTIDO POR GESTO DO USUÁRIO) ======
+    const audio = new Audio();
+    audio.src = 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_8cfa1b1b0c.mp3';
+    audio.preload = 'auto';
+    audio.volume = 0.5;('https://cdn.pixabay.com/download/audio/2022/03/15/audio_8cfa1b1b0c.mp3');
+    audio.preload = 'auto';
+    audio.volume = 0.35;
+
+    document.querySelectorAll('.card').forEach((card, index) => {
+      const btn = card.querySelector('.vote-btn');
+      const confirm = card.querySelector('.confirm');
+      const again = card.querySelector('.vote-again');
+
+      btn.addEventListener('click', () => {
+        // incrementa e SALVA o voto
+        votes[index]++;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(votes));
+
+        // toca o som (somente após clique)
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+
+        // UI
+        btn.style.display = 'none';
+        confirm.style.display = 'flex';
+        updateAdmin();
+      });
+      });
+
+      again.addEventListener('click', () => {
+        confirm.style.display = 'none';
+        btn.style.display = 'block';
+      });
+    });
+
+    function updateAdmin() {
+      const panel = document.getElementById('adminResults');
+      if (!panel) return;
+
+      panel.innerHTML = '';
+      const total = votes.reduce((a, b) => a + b, 0) || 1;
+
+      votes
+        .map((v, i) => ({ nome: document.querySelectorAll('.name')[i].innerText, votos: v }))
+        .sort((a, b) => b.votos - a.votos)
+        .forEach((p, i) => {
+          const perc = Math.round((p.votos / total) * 100);
+          panel.innerHTML += `
+            <p><strong>${i + 1}º</strong> ${p.nome} — ${p.votos} votos (${perc}%)</p>
+            <div class="bar"><div class="fill" style="width:${perc}%"></div></div>
+          `;
+        });
+    }
+
+    // atualiza admin ao carregar a página
+    updateAdmin();() {
+      const panel = document.getElementById('adminResults');
+      if (!panel) return;
+
+      panel.innerHTML = '';
+      const total = votes.reduce((a, b) => a + b, 0) || 1;
+
+      votes
+        .map((v, i) => ({ nome: document.querySelectorAll('.name')[i].innerText, votos: v }))
+        .sort((a, b) => b.votos - a.votos)
+        .forEach((p, i) => {
+          const perc = Math.round((p.votos / total) * 100);
+          panel.innerHTML += `
+            <p><strong>${i + 1}º</strong> ${p.nome} — ${p.votos} votos (${perc}%)</p>
+            <div class="bar"><div class="fill" style="width:${perc}%"></div></div>
+          `;
+        });
+    }
+
+    // Mostrar admin apenas com ?admin
+    if (location.search.includes('admin')) {
+      document.getElementById('adminPanel').style.display = 'block';
+      updateAdmin();
+    }
+  </script>
+</body>
+</html>
